@@ -34,12 +34,12 @@ namespace BusinessManagementApi.Helpers
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id), 
-                new Claim(ClaimTypes.Role, user.Role),
-                new Claim("email", user.Email ?? ""),
-                new Claim("role",user.Role ?? ""),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim("UserId", user.Id),
+                new Claim("role", user.Role),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),        
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName), 
+                new Claim(ClaimTypes.Name, user.UserName),       
             };
 
             var token = new JwtSecurityToken(

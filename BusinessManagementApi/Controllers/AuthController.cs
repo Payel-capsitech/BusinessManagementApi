@@ -40,5 +40,28 @@ namespace BusinessManagementApi.Controllers
             var token = await _authService.LoginAsync(dto);
             return Ok(new { token });
         }
+
+        [HttpGet("userdetails")]
+        public async Task<IActionResult> GetUserDetails()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(new { message = "Invalid token or missing user ID." });
+
+            var user = await _authService.GetUserByIdAsync(userId);
+            if (user == null)
+                return NotFound(new { message = "User not found." });
+
+            return Ok(new
+            {
+                id = user.Id,
+                username = user.UserName,
+                email = user.Email,
+                role = user.Role
+            });
+        }
+
+
     }
 }

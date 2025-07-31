@@ -2,6 +2,7 @@
 using BusinessManagementApi.Helpers;
 using BusinessManagementApi.Models;
 using BusinessManagementApi.Repositories;
+using MongoDB.Bson;
 
 namespace BusinessManagementApi.Services
 {
@@ -29,11 +30,10 @@ namespace BusinessManagementApi.Services
         {
             var user = new User
             {
-                Id = Guid.NewGuid().ToString(),
                 UserName = dto.UserName,
                 Email = dto.Email,
                 PasswordHash = PasswordHasher.HashPassword(dto.Password),
-                Role = dto.Role
+                Role = dto.Role.ToString(),
             };
 
             await _userRepository.AddAsync(user);
@@ -55,5 +55,17 @@ namespace BusinessManagementApi.Services
 
             return _jwtHelper.GenerateToken(user);
         }
+
+
+        /// <summary>
+        /// Get user details by their id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<User?> GetUserByIdAsync(string userId)
+        {
+            return await _userRepository.GetByIdAsync(userId);
+        }
+
     }
 }

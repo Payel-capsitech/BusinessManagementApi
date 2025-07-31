@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System.Linq.Expressions;
 
 namespace BusinessManagementApi.Repositories
@@ -10,17 +11,11 @@ namespace BusinessManagementApi.Repositories
     {
         private readonly IMongoCollection<T> _collection;
 
-        /// <summary>
-        /// Initialize the repository with the collection name.
-        /// </summary>
         public Repository(MongoDbContext context, string collectionName)
         {
             _collection = context.GetCollection<T>(collectionName);
         }
 
-        /// <summary>
-        /// Get all documents with optional filtering.
-        /// </summary>
         public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null)
         {
             return filter == null
@@ -28,30 +23,26 @@ namespace BusinessManagementApi.Repositories
                 : await _collection.Find(filter).ToListAsync();
         }
 
-        /// <summary>
-        /// Get a single document by Id.
-        /// </summary>
         public async Task<T?> GetByIdAsync(string id)
         {
-            return await _collection.Find(Builders<T>.Filter.Eq("Id", id)).FirstOrDefaultAsync();
+            var filter = Builders<T>.Filter.Eq("_id", BsonValue.Create(id));
+            return await _collection.Find(filter).FirstOrDefaultAsync();
         }
 
-        /// <summary>
-        /// Add a new document to the collection.
-        /// </summary>
-        public async Task AddAsync(T entity) =>
+        public async Task AddAsync(T entity)
+        {
             await _collection.InsertOneAsync(entity);
+        }
 
-        /// <summary>
-        /// Update a document by Id.
-        /// </summary>
-        public async Task UpdateAsync(string id, T entity) =>
-            await _collection.ReplaceOneAsync(Builders<T>.Filter.Eq("Id", id), entity);
+        public async Task UpdateAsync(string id, T entity)
+        {
+            await _collection.ReplaceOneAsync(Builders<T>.Filter.Eq("_id", BsonValue.Create(id)), entity);
+        }
 
-        /// <summary>
-        /// Delete a document by Id.
-        /// </summary>
-        public async Task DeleteAsync(string id) =>
-            await _collection.DeleteOneAsync(Builders<T>.Filter.Eq("Id", id));
+        public async Task DeleteAsync(string id)
+        {
+            await _collection.DeleteOneAsync(Builders<T>.Filter.Eq("_id", BsonValue.Create(id)));
+        }
     }
+
 }

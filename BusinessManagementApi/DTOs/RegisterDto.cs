@@ -5,24 +5,33 @@
     /// </summary>
     public class RegisterDto
     {
-        ///// <summary>
-        ///// User's display name.
-        ///// </summary>
+        /// <summary>
+        /// User's display name.
+        /// </summary>
         public string UserName { get; set; } = string.Empty;
 
         /// <summary>
-        /// User's email address 
+        /// User's email address (used for login).
         /// </summary>
         public string Email { get; set; } = string.Empty;
 
         /// <summary>
-        /// Password in plain text 
+        /// Password in plain text (will be hashed before saving).
         /// </summary>
         public string Password { get; set; } = string.Empty;
 
         /// <summary>
-        /// Role of the user : admin, staff, manager
+        /// Role of the user (examples: admin, manager, staff).
         /// </summary>
-        public string Role { get; set; } = string.Empty;
+        public UserRole Role { get; set; } = UserRole.Unknown;
     }
+
+    public enum UserRole
+    {
+        Unknown,
+        Admin,
+        Manager,
+        Staff
+    }
+
 }

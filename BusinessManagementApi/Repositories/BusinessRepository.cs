@@ -41,6 +41,48 @@ namespace BusinessManagementApi.Repositories
         /// Get a business by Id.
         /// </summary>
         public async Task<Business?> GetByIdAsync(string id) =>
-            await _collection.Find(b => b.Id == id).FirstOrDefaultAsync();
+            await _collection.Find(b => b.BusinessId == id).FirstOrDefaultAsync();
+
+        ///<summary>
+        ///Adding Pagination in List 
+        ///</summary>
+        public async Task<(List<Business> Businesses, long TotalCount)> GetPagedAsync(int page, int pageSize)
+        {
+            var totalCount = await _collection.CountDocumentsAsync(FilterDefinition<Business>.Empty);
+
+            var businesses = await _collection.Find(FilterDefinition<Business>.Empty)
+                                              .Skip((page - 1) * pageSize)
+                                              .Limit(pageSize)
+                                              .ToListAsync();
+
+            return (businesses, totalCount);
+        }
+
+        public async Task<Business?> GetLastBusinessAsync()
+        {
+            return await _collection
+                .Find(_ => true)
+                .SortByDescending(b => b.BusinessCode) 
+                .Limit(1)
+                .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// gets all businesses
+        /// </summary>
+
+        public async Task<long> GetBusinessCountAsync()
+        {
+            return await _collection.CountDocumentsAsync(FilterDefinition<Business>.Empty);
+        }
+
+        public async Task UpdateAsync(string businessId, UpdateDefinition<Business> update)
+        {
+            var filter = Builders<Business>.Filter.Eq(b => b.BusinessId, businessId);
+            await _collection.UpdateOneAsync(filter, update);
+        }
+
+
+
     }
 }

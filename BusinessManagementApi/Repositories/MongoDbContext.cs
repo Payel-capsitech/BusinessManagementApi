@@ -1,5 +1,6 @@
 ﻿using BusinessManagementApi.Helpers;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace BusinessManagementApi.Repositories
@@ -17,5 +18,8 @@ namespace BusinessManagementApi.Repositories
 
         public IMongoCollection<T> GetCollection<T>(string collectionName) =>
             _database.GetCollection<T>(collectionName);
+
+        public IMongoCollection<BsonDocument> GetCollection(string collectionName) =>
+           _database.GetCollection<BsonDocument>(collectionName);
     }
 }
