@@ -1,9 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using BusinessManagementApi.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
-using BusinessManagementApi.Models;
-using Microsoft.Extensions.Configuration;
 
 namespace BusinessManagementApi.Helpers
 {
@@ -51,6 +52,20 @@ namespace BusinessManagementApi.Helpers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        /// <summary>
+        /// Generate refresh token 
+        /// </summary>
+        /// <returns></returns>
+        public string GenerateRefreshToken()
+        {
+            var randomBytes = new byte[64];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomBytes);
+                return Convert.ToBase64String(randomBytes);
+            }
         }
 
     }

@@ -15,7 +15,17 @@ namespace BusinessManagementApi.Helpers
             _historyRepository = historyRepository;
             _userRepository = userRepository;
         }
-
+        /// <summary>
+        /// Adding new history
+        /// </summary>
+        /// <param name="targetId"></param>
+        /// <param name="createdById"></param>
+        /// <param name="createdByName"></param>
+        /// <param name="type"></param>
+        /// <param name="action"></param>
+        /// <param name="description"></param>
+        /// <param name="businessId"></param>
+        /// <returns></returns>
         public async Task AddHistoryAsync(string targetId, string createdById, string createdByName, HistoryType type, string action, string? description = null, string businessId = "")
         {
             if (string.IsNullOrEmpty(createdByName) || createdByName == "Unknown")
@@ -47,7 +57,10 @@ namespace BusinessManagementApi.Helpers
 
             await _historyRepository.AddAsync(history);
         }
-
+        /// <summary>
+        /// Get all history 
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<History>> GetAllHistoryAsync()
         {
             return await _historyRepository.GetAllAsync();

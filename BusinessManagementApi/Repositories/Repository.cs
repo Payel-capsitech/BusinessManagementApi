@@ -33,12 +33,21 @@ namespace BusinessManagementApi.Repositories
         {
             await _collection.InsertOneAsync(entity);
         }
-
+        /// <summary>
+        /// Update 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public async Task UpdateAsync(string id, T entity)
         {
             await _collection.ReplaceOneAsync(Builders<T>.Filter.Eq("_id", BsonValue.Create(id)), entity);
         }
-
+        /// <summary>
+        /// Delete 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task DeleteAsync(string id)
         {
             await _collection.DeleteOneAsync(Builders<T>.Filter.Eq("_id", BsonValue.Create(id)));

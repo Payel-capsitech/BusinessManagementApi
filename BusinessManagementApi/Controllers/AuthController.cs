@@ -1,4 +1,5 @@
 ﻿using BusinessManagementApi.DTOs;
+using BusinessManagementApi.Helpers;
 using BusinessManagementApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,13 +13,15 @@ namespace BusinessManagementApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
+        private readonly JwtHelper _jwtHelper;
 
         /// <summary>
         /// Injects the AuthService.
         /// </summary>
-        public AuthController(AuthService authService)
+        public AuthController(AuthService authService, JwtHelper jwtHelper)
         {
             _authService = authService;
+            _jwtHelper = jwtHelper;
         }
 
         /// <summary>
@@ -34,6 +37,7 @@ namespace BusinessManagementApi.Controllers
         /// <summary>
         /// Authenticates a user and returns a JWT token if credentials are valid.
         /// </summary>
+
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
@@ -41,6 +45,10 @@ namespace BusinessManagementApi.Controllers
             return Ok(new { token });
         }
 
+        /// <summary>
+        /// Get all the details of the logged in user
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("userdetails")]
         public async Task<IActionResult> GetUserDetails()
         {
@@ -61,6 +69,9 @@ namespace BusinessManagementApi.Controllers
                 role = user.Role
             });
         }
+
+
+
 
 
     }

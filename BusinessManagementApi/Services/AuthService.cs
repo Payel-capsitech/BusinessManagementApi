@@ -67,5 +67,6 @@ namespace BusinessManagementApi.Services
             return await _userRepository.GetByIdAsync(userId);
         }
 
+
     }
 }

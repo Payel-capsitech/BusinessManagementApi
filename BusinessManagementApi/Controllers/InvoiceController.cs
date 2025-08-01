@@ -133,15 +133,15 @@ namespace BusinessManagementApi.Controllers
             return Ok(invoices);
         }
 
-     /// <summary>
-     /// adding Pagination
-     /// </summary>
-     /// <param name="page"></param>
-     /// <param name="pageSize"></param>
-     /// <param name="search"></param>
-     /// <param name="startDate"></param>
-     /// <param name="endDate"></param>
-     /// <returns></returns>
+         /// <summary>
+         /// adding Pagination
+         /// </summary>
+         /// <param name="page"></param>
+         /// <param name="pageSize"></param>
+         /// <param name="search"></param>
+         /// <param name="startDate"></param>
+         /// <param name="endDate"></param>
+         /// <returns></returns>
         
         [HttpGet("PaginatedInvoice")]
         public async Task<IActionResult> GetInvoices(

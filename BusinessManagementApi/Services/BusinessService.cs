@@ -103,7 +103,8 @@ namespace BusinessManagementApi.Services
             }
 
             var allBusinesses = await _businessRepository.GetAllAsync();
-            return allBusinesses.Where(b => b.CreatedBy != null && b.CreatedBy.CreatedByUserId == userId).ToList();
+            //return allBusinesses.Where(b => b.CreatedBy != null && b.CreatedBy.CreatedByUserId == userId).ToList();
+            return [.. allBusinesses.Where(b => b.CreatedBy != null && b.CreatedBy.CreatedByUserId == userId)];
 
         }
         /// <summary>
